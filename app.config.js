@@ -1,0 +1,53 @@
+import "dotenv/config";
+
+export default {
+    expo: {
+        name: "Llamify Seed",
+        slug: "llamifySeed",
+        version: "1.0.0",
+        scheme: "llamifyseed",
+        platforms: ["ios", "android"],
+        web: {
+            bundler: "metro",
+            output: "static",
+            favicon: "./assets/favicon.png",
+        },
+        plugins: ["expo-router"],
+        experiments: {
+            typedRoutes: true,
+            tsconfigPaths: true,
+        },
+        orientation: "portrait",
+        icon: "./assets/icon.png",
+        userInterfaceStyle: "light",
+        splash: {
+            image: "./assets/splash.png",
+            resizeMode: "contain",
+            backgroundColor: "#ffffff",
+        },
+        assetBundlePatterns: ["**/*"],
+        ios: {
+            supportsTablet: true,
+            bundleIdentifier: "xyz.modamo.llamifySeed",
+            infoPlist: {
+                ITSAppUsesNonExemptEncryption: false,
+            },
+        },
+        android: {
+            adaptiveIcon: {
+                foregroundImage: "./assets/adaptive-icon.png",
+                backgroundColor: "#ffffff",
+            },
+        },
+        extra: {
+            router: {},
+            eas: {
+                projectId: "6af8612d-e618-4703-8055-bb4b97ae4924",
+            },
+            EXPO_PUBLIC_SPOTIFY_CLIENT_ID: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID,
+            EXPO_PUBLIC_SUPABASE_KEY: process.env.EXPO_PUBLIC_SUPABASE_KEY,
+            EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
+        },
+        owner: "morganthemosaic",
+    },
+};

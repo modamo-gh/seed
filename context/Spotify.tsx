@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
+import Constants from "expo-constants";
 import * as WebBrowser from "expo-web-browser";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { SpotifyContextType } from "~/types";
-import { supabase } from "~/utils/supabase";
+import { SpotifyContextType } from "../types";
+import { supabase } from "../utils/supabase";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,7 +22,7 @@ export const SpotifyProvider = ({ children }: { children: ReactNode }) => {
 
     const [request, response, promptAsync] = useAuthRequest(
         {
-            clientId: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID!,
+            clientId: Constants.expoConfig?.extra?.EXPO_PUBLIC_SPOTIFY_CLIENT_ID,
             scopes: [
                 "user-read-email",
                 "user-read-private",
@@ -97,7 +98,7 @@ export const SpotifyProvider = ({ children }: { children: ReactNode }) => {
                 },
                 body: `grant_type=authorization_code&code=${code}&redirect_uri=${makeRedirectUri({
                     scheme: "llamify",
-                })}&client_id=${process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID}&code_verifier=${request?.codeVerifier}`,
+                })}&client_id=${Constants.expoConfig?.extra?.EXPO_PUBLIC_SPOTIFY_CLIENT_ID}&code_verifier=${request?.codeVerifier}`,
             });
 
             const tokenData = await tokenResponse.json();
@@ -145,7 +146,7 @@ export const SpotifyProvider = ({ children }: { children: ReactNode }) => {
             }
 
             const response = await fetch("https://accounts.spotify.com/api/token", {
-                body: `grant_type=refresh_token&refresh_token=${refreshToken}&client_id=${process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID}`,
+                body: `grant_type=refresh_token&refresh_token=${refreshToken}&client_id=${Constants.expoConfig?.extra?.EXPO_PUBLIC_SPOTIFY_CLIENT_ID}`,
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 method: "POST",
             });
